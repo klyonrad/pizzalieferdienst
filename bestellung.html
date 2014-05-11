@@ -9,14 +9,27 @@
 	<img src="640px-Eq_it-na_pizza-margherita_sep2005_sml-2.png" alt="Pizzaaa!!" height="90" width="130"> Margherita 4,00€ <br/>
 	<img src="640px-Eq_it-na_pizza-margherita_sep2005_sml-2.png" alt="Pizzaaa!!" height="90" width="130"> Salami 4,50€ <br/>
 	<img src="640px-Eq_it-na_pizza-margherita_sep2005_sml-2.png" alt="Pizzaaa!!" height="90" width="130"> Hawaii 5,50€ <br/>
-	<textarea name="pizzasToOrder" cols="30" rows="5"></textarea> </br>
+	<!--<textarea name="pizzasToOrder" cols="30" rows="5"></textarea> </br>-->
 	
-	<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer" /> </br>
-	15,70€</br>
+	<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
+	<select name="pizzasToOrder" size="5" multiple> 
+	  <option>Margherita</option>
+	  <option>Salami</option>
+	</select>
+	<br/>
+	
+	
+	
+	<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/> <br/>
+	15,70€<br/>
 	
 	<!-- TODO: add formaction-->
 	<button type="reset">Alle Löschen</button> 
 	<button type="button">Auswahl Löschen</button> 
-	<button type="submit">Bestellen</button> 
+	
+	
+	<!--Username: <input type="text" name="user"> -->
+	<input type="submit" value="Submit"> </form>
+	<!--<button type="submit" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?bestellungMitName'">Bestellen</button> -->
 	</body>
 </html>
