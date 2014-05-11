@@ -4,33 +4,70 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Pizzabestellung</title>
+		<script type="text/javascript">
+			gesamt = 0.0;
+			function Hinzufuegen (pizza, preis) {
+				NeuerEintrag = new Option(pizza, pizza, false, false);
+				document.input.pizzasToOrder.options[document.input.pizzasToOrder.length] = NeuerEintrag;
+				gesamt = gesamt + preis;
+				document.input.price.value = "Preis: " + gesamt.toFixed(2) + "€";
+			}
+			
+			function resetAll(){
+				document.input.pizzasToOrder.options.length = 0;
+				gesamt = 0.0;
+				document.input.price.value = "Preis: " + gesamt.toFixed(2) + "€";
+				document.input.addressentry.value = "";
+			}
+			
+			function deleteSelected(){
+				pizza = document.input.pizzasToOrder.options[document.input.pizzasToOrder.selectedIndex].value;
+				if(pizza == "Margherita")
+					gesamt = gesamt - 4.0;
+				if(pizza == "Salami")
+					gesamt = gesamt - 4.5;
+				if(pizza == "Hawaii")
+					gesamt = gesamt - 5.5;
+				document.input.pizzasToOrder.options[document.input.pizzasToOrder.selectedIndex] = null;
+				document.input.price.value = "Preis: " + gesamt.toFixed(2) + "€";
+			
+			}
+				
+			function bestellen(){
+				bestellung = "http://www.fbi.h-da.de/cgi-bin/Echo.pl?";
+				if(document.input.pizzasToOrder.length > 0 && document.input.addressentry.value != ""){
+					bestellung = bestellung + "Name=" + document.input.addressentry.value;
+					for(i =0; i < document.input.pizzasToOrder.length; i++){
+						bestellung = bestellung + "&" + "Pizza" + i + "=" + document.input.pizzasToOrder.options[i].value;
+					}
+					
+					window.location.href = bestellung;
+				}else{
+					alert("Die Bestellung ist nicht vollständig!");
+				}
+			}	
+    </script>
 	</head>
+	
 	<body>
 	<h1>Bestellung</h1>
-	<img src="640px-Eq_it-na_pizza-margherita_sep2005_sml-2.png" alt="Pizzaaa!!" height="90" width="130"> Margherita 4,00€ <br/>
-	<img src="640px-Eq_it-na_pizza-margherita_sep2005_sml-2.png" alt="Pizzaaa!!" height="90" width="130"> Salami 4,50€ <br/>
-	<img src="640px-Eq_it-na_pizza-margherita_sep2005_sml-2.png" alt="Pizzaaa!!" height="90" width="130"> Hawaii 5,50€ <br/>
-	<!--<textarea name="pizzasToOrder" cols="30" rows="5"></textarea> </br>-->
-	
 	<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
-	<select name="pizzasToOrder" size="5" multiple> 
-	  <option>Margherita</option>
-	  <option>Salami</option>
-	</select>
+	<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Margherita', 4.00)"> Margherita 4,00€ <br/>
+	<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Salami', 4.50)"> Salami 4,50€ <br/>
+	<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Hawaii', 5.50)"> Hawaii 5,50€ <br/>	
+	
+	<select name="pizzasToOrder" size="5" width="300" style="width: 200px"multiple></select>
 	<br/>
 	
-	
-	
+	<input name="price" type="text" value="Preis: 0.00€" size="30" disabled><br/>
 	<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/> <br/>
-	15,70€<br/>
-	
+		
 	<!-- TODO: add formaction-->
-	<button type="reset">Alle Löschen</button> 
-	<button type="button">Auswahl Löschen</button> 
+	<button type="button" onClick="resetAll()">Alle Löschen</button> 
+	<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 
 	
-	
-	<!--Username: <input type="text" name="user"> -->
-	<input type="submit" value="Submit"> </form>
-	<!--<button type="submit" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?bestellungMitName'">Bestellen</button> -->
+	<button type="button" onClick="bestellen()">Bestellen</button> 
+	</form>
+	<!--<button type="submit" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?bestellungMitName=lol&test'">Bestellen</button> -->
 	</body>
 </html>
