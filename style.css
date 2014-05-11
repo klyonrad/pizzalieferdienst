@@ -1,9 +1,11 @@
-/*ö umlaut für encoding */
+﻿/*ö umlaut für encoding */
 h1 { 
 	clear: both; 
 	text-align:left; 
 	color: black; 
-	background-color: Lightblue; }
+	background-color: Lightblue;
+	border: 1px solid black;
+}
 nav {  }
 nav ul { list-style: none;}
 nav item {
@@ -13,4 +15,25 @@ nav item {
 	border: 4px solid grey; 
 	font-size: 3ex; 
 	background-color: Lavender;
+}
+
+.content{
+	width: 650px;
+	margin-left: 0px;
+}
+
+.artikel { 
+	float:left;
+	width:200;
+}
+
+.bestellung {
+	position:relative;
+	top: 30px;
+	float: right;
+	width: 350px;
+}
+
+.adressen{
+border: 2px solid black;
 }

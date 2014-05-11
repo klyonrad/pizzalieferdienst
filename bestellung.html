@@ -51,23 +51,27 @@
 	
 	<body>
 	<h1>Bestellung</h1>
-	<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
-	<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Margherita', 4.00)"> Margherita 4,00€ <br/>
-	<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Salami', 4.50)"> Salami 4,50€ <br/>
-	<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Hawaii', 5.50)"> Hawaii 5,50€ <br/>	
-	
-	<select name="pizzasToOrder" size="5" width="300" style="width: 200px"multiple></select>
-	<br/>
+	<div class="content">
+	<div class="artikel">
+		<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
+		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Margherita', 4.00)"> Margherita 4,00€ <br/>
+		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Salami', 4.50)"> Salami 4,50€ <br/>
+		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Hawaii', 5.50)"> Hawaii 5,50€
+	</div>
+	<div class="bestellung">
+		<select name="pizzasToOrder" size="10" width="300" style="width: 300px"multiple></select>
+		<br/>
 	
 	<input name="price" type="text" value="Preis: 0.00€" size="30" disabled><br/>
+	<br/>
 	<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/> <br/>
 		
-	<!-- TODO: add formaction-->
+	<!-- TODO: add formaction</div><div class="clear">-->
 	<button type="button" onClick="resetAll()">Alle Löschen</button> 
-	<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 
-	
+	<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 	
 	<button type="button" onClick="bestellen()">Bestellen</button> 
 	</form>
-	<!--<button type="submit" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?bestellungMitName=lol&test'">Bestellen</button> -->
+	</div>
+	</div>
 	</body>
 </html>
