@@ -1,2 +1,16 @@
 /*ö umlaut für encoding */
-h1 { clear: both; text-align:left; color: black; background-color: Lightblue; }
+h1 { 
+	clear: both; 
+	text-align:left; 
+	color: black; 
+	background-color: Lightblue; }
+nav {  }
+nav ul { list-style: none;}
+nav item {
+	text-decoration:underline; 
+	text-align:center; 
+	margin: 5px; 
+	border: 4px solid grey; 
+	font-size: 3ex; 
+	background-color: Lavender;
+}
