@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<link rel="stylesheet" type="text/css" href="style.css" />
+
 <html>
 	<head>
+		<link rel="stylesheet" type="text/css" href="style.css" />
 		<meta charset="UTF-8" />
 		<title>Pizzabestellung</title>
 		<script type="text/javascript">
@@ -51,15 +52,16 @@
 	
 	<body>
 	<h1>Bestellung</h1>
+	<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
 	<div class="content">
 	<div class="artikel">
-		<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
+		
 		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Margherita', 4.00)"> Margherita 4,00€ <br/>
 		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Salami', 4.50)"> Salami 4,50€ <br/>
 		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Hawaii', 5.50)"> Hawaii 5,50€
 	</div>
 	<div class="bestellung">
-		<select name="pizzasToOrder" size="10" width="300" style="width: 300px" multiple></select>
+		<select name="pizzasToOrder" size="10" style="width: 300px" multiple></select>
 		<br/>
 	
 	<input name="price" type="text" value="Preis: 0.00€" size="30" disabled>
@@ -71,8 +73,9 @@
 	<button type="button" onClick="resetAll()">Alle Löschen</button> 
 	<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 	
 	<button type="button" onClick="bestellen()">Bestellen</button> 
+	
+	</div>
+	</div>
 	</form>
-	</div>
-	</div>
 	</body>
 </html>
