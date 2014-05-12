@@ -6,9 +6,8 @@ h1 {
 	background-color: Lightblue;
 	border: 1px solid black;
 }
-nav {  }
-nav ul { list-style: none;}
-nav item {
+
+navitem {
 	text-decoration:underline; 
 	text-align:center; 
 	margin: 5px; 
