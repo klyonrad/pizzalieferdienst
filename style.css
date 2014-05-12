@@ -17,21 +17,13 @@ nav item {
 	background-color: Lavender;
 }
 
-.content{
-	width: 650px;
-	margin-left: 0px;
-}
-
 .artikel { 
 	float:left;
-	width:200;
+	width:40%;
 }
 
 .bestellung {
-	position:relative;
-	top: 30px;
-	float: right;
-	width: 350px;
+	width: 100%;
 }
 
 .adressen{
