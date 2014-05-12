@@ -57,23 +57,27 @@
 	<h1>Bestellung</h1>
 	<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
 	<div class="artikel">
-		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(0)"> Margherita&nbsp;4,00€ <br/>
-		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(1)"> Salami&nbsp;4,50€<br/>
-		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(2)"> Hawaii&nbsp;5,50€
+	      <table>
+		<tr><td><img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(0)"> Margherita&nbsp;4,00€</td></tr>
+		<tr><td><img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(1)"> Salami&nbsp;4,50€</td></tr>
+		<tr><td><img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(2)"> Hawaii&nbsp;5,50€</td></tr>
+	      </table>
 	</div>
-	<div class="bestellung">
+	<div class="content">
+	  <div class="bestellung">
 		<select name="pizzasToOrder" size="10" style="width: 250px" multiple></select>
-		<br/>
-
-	<input name="price" type="text" value="Preis: 0.00€" size="30" disabled>
-	<br/>
-	<br/>
-	<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/> <br/>
-	<button type="button" onClick="resetAll()">Alle Löschen</button> 
-	<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 	
-	<button type="button" onClick="bestellen()">Bestellen</button> 
-	
-	
+	  </div>
+	  <div class="bestellung">
+		<input name="price" type="text" value="Preis: 0.00€" size="30" disabled>
+	  </div>
+	  <div class="bestellung">
+		<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/>
+	  </div>
+	  <div class="bestellung">
+		<button type="button" onClick="resetAll()">Alle Löschen</button> 
+		<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 	
+		<button type="button" onClick="bestellen()">Bestellen</button> 
+	  </div>
 	</div>
 	</form>
 	</body>

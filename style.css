@@ -21,11 +21,15 @@ ul {list-style: none;}
 
 .artikel { 
 	float:left;
-	width:40%;
+	width:50%;
+}
+
+.content{
+	float: right;
 }
 
 .bestellung {
-	width: 100%;
+
 }
 
 .adressen{
