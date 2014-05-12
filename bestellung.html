@@ -7,10 +7,13 @@
 		<title>Pizzabestellung</title>
 		<script type="text/javascript">
 			gesamt = 0.0;
-			function Hinzufuegen (pizza, preis) {
-				NeuerEintrag = new Option(pizza, pizza, false, false);
+			pizzen = new Array("Margherita", "Salami", "Hawaii");
+			preise = new Array(4.0, 4.5, 5.5);
+			function Hinzufuegen (id) {
+				
+				NeuerEintrag = new Option(pizzen[id], pizzen[id], false, false);
 				document.input.pizzasToOrder.options[document.input.pizzasToOrder.length] = NeuerEintrag;
-				gesamt = gesamt + preis;
+				gesamt = gesamt + preise[id];
 				document.input.price.value = "Preis: " + gesamt.toFixed(2) + "€";
 			}
 			
@@ -24,11 +27,11 @@
 			function deleteSelected(){
 				pizza = document.input.pizzasToOrder.options[document.input.pizzasToOrder.selectedIndex].value;
 				if(pizza == "Margherita")
-					gesamt = gesamt - 4.0;
+					gesamt = gesamt - preise[0];
 				if(pizza == "Salami")
-					gesamt = gesamt - 4.5;
+					gesamt = gesamt - preise[1];
 				if(pizza == "Hawaii")
-					gesamt = gesamt - 5.5;
+					gesamt = gesamt - preise[2];
 				document.input.pizzasToOrder.options[document.input.pizzasToOrder.selectedIndex] = null;
 				document.input.price.value = "Preis: " + gesamt.toFixed(2) + "€";
 			
@@ -53,28 +56,24 @@
 	<body>
 	<h1>Bestellung</h1>
 	<form name="input" action="http://www.fbi.h-da.de/cgi-bin/Echo.pl" method="get">
-	<div class="content">
 	<div class="artikel">
-		
-		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Margherita', 4.00)"> Margherita 4,00€ <br/>
-		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Salami', 4.50)"> Salami 4,50€ <br/>
-		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen('Hawaii', 5.50)"> Hawaii 5,50€
+		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(0)"> Margherita 4,00€ <br/>
+		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(1)"> Salami 4,50€ <br/>
+		<img src="pizza.png" alt="Pizzaaa!!" height="90" width="130" onClick="Hinzufuegen(2)"> Hawaii 5,50€
 	</div>
 	<div class="bestellung">
-		<select name="pizzasToOrder" size="10" style="width: 300px" multiple></select>
+		<select name="pizzasToOrder" size="10" style="width: 250px" multiple></select>
 		<br/>
-	
+
 	<input name="price" type="text" value="Preis: 0.00€" size="30" disabled>
 	<br/>
 	<br/>
 	<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/> <br/>
-		
-	<!-- TODO: add formaction</div><div class="clear">-->
 	<button type="button" onClick="resetAll()">Alle Löschen</button> 
 	<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 	
 	<button type="button" onClick="bestellen()">Bestellen</button> 
 	
-	</div>
+	
 	</div>
 	</form>
 	</body>
