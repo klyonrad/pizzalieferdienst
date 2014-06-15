@@ -174,7 +174,7 @@ EOT;
     
     
     private function insert_pizzen($name = "", $price = -1.0){
-	echo "\t\t\t<tr><td><img src=\"pizza.png\" alt=\"$name\" height=\"90\" width=\"130\" onClick=\"Hinzufuegen('$name', $price)\"> $name&nbsp;$price€</td></tr>\n"
+	echo "\t\t\t<tr><td><img src=\"pizza.png\" alt=\"$name\" height=\"90\" width=\"130\" onClick=\"Hinzufuegen('$name', $price)\"> $name&nbsp;$price€</td></tr>\n";
     }
     
     
