@@ -43,6 +43,10 @@ class bestellung extends Page
      *
      * @return none
      */
+     
+    private $recordset;
+    
+     
     protected function __construct() 
     {
         parent::__construct();
@@ -69,7 +73,15 @@ class bestellung extends Page
      */
     protected function getViewData()
     {
-        // to do: fetch data for this view from the database
+		try {
+		$SQLabfrage = "SELECT * FROM Angebot";
+		$this->recordset = $this->_database->query ($SQLabfrage);
+		}
+		
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}
+       
     }
     
     /**
@@ -88,6 +100,54 @@ class bestellung extends Page
         // to do: call generateView() for all members
         // to do: output view of this page
         $link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?';
+        $this->generateJSfunctions($link);
+        echo<<<EOT
+
+	
+	<h1>Bestellung</h1>
+	<form name="input" action="$link" method="get">
+	<div class="artikel">
+	      <table>        
+EOT;
+	
+		while ($record = $this->recordset->fetch_assoc()){
+			$this->insert_pizzen($record['pizzaname'], $record['price'], $record['imgfile']);
+		}
+	/*
+        $this->insert_pizzen(, 4.0);
+        $this->insert_pizzen('Salami', 4.5);
+        $this->insert_pizzen('Hawaii', 5.5);
+        */
+        
+        echo<<<EOT
+        
+	      </table>
+	</div>
+	<div class="content">
+	  <div class="bestellung">
+		<select name="pizzasToOrder" size="10" style="width: 250px"></select>
+	  </div>
+	  <div class="bestellung">
+		<input name="price" type="text" value="Preis: 0.00€" size="30" disabled>
+	  </div>
+	  <div class="bestellung">
+		<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/>
+	  </div>
+	  <div class="bestellung">
+		<button type="button" onClick="resetAll()">Alle Löschen</button> 
+		<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 	
+		<button type="button" onClick="bestellen()">Bestellen</button> 
+	  </div>
+	</div>
+	</form>
+EOT;
+        
+        $this->generatePageFooter();
+    }
+    
+    private function generateJSfunctions($link)
+    {
+		
         echo<<<EOT
         <script type="text/javascript">
 			gesamt = 0.0;
@@ -127,54 +187,20 @@ class bestellung extends Page
 					}
 					
 					window.location.href = bestellung;
-				}else {
-					alert("Die Bestellung ist nicht vollständig! \n\nHaben sie evtl:\n  keine Pizza ausgewählt?\n  keine Adresse angegeben?");
+				}else { \n \t\t\t\t\t
+EOT;
+			// short interruption of EOT so that \n (newline) doesn't break stuff.
+				echo 'alert("Die Bestellung ist nicht vollständig! \n\nHaben sie evtl:\n  keine Pizza ausgewählt?\n  keine Adresse angegeben?");';
+				echo<<<EOT
 				}
 			}	
 	</script>
-	
-	<h1>Bestellung</h1>
-	<form name="input" action="$link" method="get">
-	<div class="artikel">
-	      <table>        
 EOT;
-	//to do: SQL abfrage und einfügen über insert_pizzen()
-	
-	//just a template for tests ########################################################################################
-        $this->insert_pizzen('Margherita', 4.0);
-        $this->insert_pizzen('Salami', 4.5);
-        $this->insert_pizzen('Hawaii', 5.5);
-        //tests	############################################################################################################
-        
-        echo<<<EOT
-        
-	      </table>
-	</div>
-	<div class="content">
-	  <div class="bestellung">
-		<select name="pizzasToOrder" size="10" style="width: 250px"></select>
-	  </div>
-	  <div class="bestellung">
-		<input name="price" type="text" value="Preis: 0.00€" size="30" disabled>
-	  </div>
-	  <div class="bestellung">
-		<input type="text" name="addressentry" size="30" placeholder="Name, Straße Hausnummer"/>
-	  </div>
-	  <div class="bestellung">
-		<button type="button" onClick="resetAll()">Alle Löschen</button> 
-		<button type="button" onClick="deleteSelected()">Auswahl Löschen</button> 	
-		<button type="button" onClick="bestellen()">Bestellen</button> 
-	  </div>
-	</div>
-	</form>
-EOT;
-        
-        $this->generatePageFooter();
-    }
+	}
     
-    
-    private function insert_pizzen($name = "", $price = -1.0){
-        echo "\t\t\t<tr><td> <img src=\"pizza.png\" alt=\"$name\" height=\"90\" width=\"130\" onClick=\"Hinzufuegen('$name', $price)\"> $name&nbsp;$price€</td></tr>\n";
+    private function insert_pizzen($name = "", $price = -1.0, $imgfile){
+		$priceWithComma = number_format($price, 2, ",", ".");
+        echo "\t\t\t<tr><td> <img src=\"$imgfile\" alt=\"$name\" height=\"90\" width=\"130\" onClick=\"Hinzufuegen('$name', $price)\"> $name&nbsp;$priceWithComma €</td></tr>\n";
     }
     
     
@@ -189,8 +215,8 @@ EOT;
      */
     protected function processReceivedData() 
     {
-        parent::processReceivedData();
-        // to do: call processReceivedData() for all members
+        parent::processReceivedData();          
+        
     }
 
     /**

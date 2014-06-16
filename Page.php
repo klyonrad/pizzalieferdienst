@@ -49,7 +49,22 @@ abstract class Page
      */
     protected function __construct() 
     {
-      /*  $this->_database = /* to do: create instance of class MySQLi ;*/
+		try {
+			require_once '/opt/lampp/var/www/pizzalieferdienst/private/pwd.php'; // read password & co.
+			$this->_database = new MySQLi($host, $user, $pwd, "pizzalieferdienst");
+			
+			if (mysqli_connect_errno()) {
+				throw new Exception("Connect failed: ".mysqli_connect_error());
+			}
+			
+			if (!$this->_database->set_charset("utf8")) {
+				throw new Exception("Charset failed: ".$this->_database->error);
+			}			
+		}
+				
+		catch (Exception $e) {
+			echo $e->getMessage();
+			}
     }
     
     /**
@@ -59,7 +74,12 @@ abstract class Page
      */
     protected function __destruct()    
     {
-        // to do: close database
+		try {
+			$this->_database->close();
+		}
+		catch (Exception $e) {
+			echo $e->getMessage();
+			}		
     }
     
     /**

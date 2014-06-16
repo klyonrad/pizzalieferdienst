@@ -106,20 +106,20 @@ EOT;
 	$this->insert_pizza('Margherita');
 	$this->insert_pizza('Hawaii');
 	//just for static tests
-	
+		echo "</table>";
         $this->generatePageFooter();
     }
     
     
     private function insert_pizza($name = ""){
-	static $cnt = 0;
-	$link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza';
-	echo "\t<tr>\n<td>$name</td>\n";
-	echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"bestellt\" onclick=\"window.location.href='$link$cnt=bestellt'\"/></td>\n";
-	echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"inOfen\" onclick=\"window.location.href='$link$cnt=inOfen'\"/></td>\n";
-	echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"fertig\" onclick=\"window.location.href='$link$cnt=fertig'\"/></td>\n";
-	echo "\t</tr>\n";
-	$cnt++;
+		static $cnt = 0;
+		$link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza';
+		echo "\t<tr>\n<td>$name</td>\n";
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"bestellt\" onclick=\"window.location.href='$link$cnt=bestellt'\" checked/></td>\n";
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"inOfen\" onclick=\"window.location.href='$link$cnt=inOfen'\"/></td>\n";
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"fertig\" onclick=\"window.location.href='$link$cnt=fertig'\"/></td>\n";
+		echo "\t</tr>\n";
+		$cnt++;
     }
     
     /**

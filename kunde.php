@@ -107,7 +107,7 @@ EOT;
         
         echo<<<EOT
         </table>
-<div class="navitem"><a href="bestellung.html">Neue Bestellung</a> </div>
+<div class="navitem"><a href="bestellung.php">Neue Bestellung</a> </div>
 EOT;
 	
 		$this->generatePageFooter();
