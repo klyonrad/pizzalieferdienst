@@ -49,7 +49,7 @@ abstract class Page
      */
     protected function __construct() 
     {
-        $this->_database = /* to do: create instance of class MySQLi */;
+      /*  $this->_database = /* to do: create instance of class MySQLi ;*/
     }
     
     /**
@@ -79,9 +79,9 @@ abstract class Page
         
         echo<<<EOT
         <!DOCTYPE html>
-	<html>
-	<head>
-	<link rel="stylesheet" type="text/css" href="style.css" />
+		<html>
+		<head>
+		<link rel="stylesheet" type="text/css" href="style.css" />
                 <meta charset="UTF-8" />
                 <title>$headline</title>
         </head>        

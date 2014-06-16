@@ -141,7 +141,7 @@ EOT;
 	//to do: SQL abfrage und einfügen über insert_pizzen()
 	
 	//just a template for tests ########################################################################################
-	$this->insert_pizzen('Margherita', 4.0);
+        $this->insert_pizzen('Margherita', 4.0);
         $this->insert_pizzen('Salami', 4.5);
         $this->insert_pizzen('Hawaii', 5.5);
         //tests	############################################################################################################
@@ -174,7 +174,7 @@ EOT;
     
     
     private function insert_pizzen($name = "", $price = -1.0){
-	echo "\t\t\t<tr><td><img src=\"pizza.png\" alt=\"$name\" height=\"90\" width=\"130\" onClick=\"Hinzufuegen('$name', $price)\"> $name&nbsp;$price€</td></tr>\n";
+        echo "\t\t\t<tr><td> <img src=\"pizza.png\" alt=\"$name\" height=\"90\" width=\"130\" onClick=\"Hinzufuegen('$name', $price)\"> $name&nbsp;$price€</td></tr>\n";
     }
     
     

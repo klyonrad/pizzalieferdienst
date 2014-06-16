@@ -84,15 +84,13 @@ class index extends Page
     protected function generateView() 
     {
         $this->getViewData();
-        $this->generatePageHeader('to do: change headline');
-        // to do: call generateView() for all members
-        // to do: output view of this page
+        $this->generatePageHeader('Pizzalieferdienst');
         
         echo<<<EOT
-        <div class="navitem"><a href="bestellung.html">Neue Bestellung</a></div>
-	<div class="navitem"><a href="kunde.html">Bestellübersicht</a></div>
-	<div class="navitem"><a href="fahrer.html">Fahrer</a></div>
-	<div class="navitem"><a href="baecker.html">Bäcker</a></div>
+    <div class="navitem"><a href="bestellung.php">Neue Bestellung</a></div>
+	<div class="navitem"><a href="kunde.php">Bestellübersicht</a></div>
+	<div class="navitem"><a href="fahrer.php">Fahrer</a></div>
+	<div class="navitem"><a href="baecker.php">Bäcker</a></div>
 EOT;
         
         $this->generatePageFooter();

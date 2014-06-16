@@ -70,6 +70,7 @@ class fahrer extends Page
     protected function getViewData()
     {
         // to do: fetch data for this view from the database
+        //########   einiges an SQL ab hier##########################
     }
     
     /**
@@ -81,19 +82,61 @@ class fahrer extends Page
      *
      * @return none
      */
+
+
+        
     protected function generateView() 
     {
+        $testaddress = "Müller, Freßgasse 11, 65000 Frankfurt";
+        $testprice = 13.00;
+        $testpizzen = ["Tonno", "Calzone", "Margherita", "Hawaii","Tonno"];
+
         $this->getViewData();
         $this->generatePageHeader('Fahrer');
         // to do: call generateView() for all members
         // to do: output view of this page
-        echo "\t<h1>Fahrer</h1>\n"
-	echo "\t<div class=\"adressen\">\n"
+        echo "\t<h1>Fahrer</h1>\n";
+
+        $this->outputOneOrder($testaddress, $testpizzen, $testprice);
+        $this->outputOneOrder($testaddress, $testpizzen, $testprice);
 	
-	//einiges an SQL ab hier################################
 	
         $this->generatePageFooter();
     }
+
+
+    private function outputOneOrder($address, $pizzen, $completeprice = -1.0)
+    {
+        $completeprice = number_format($completeprice, 2, ",", ".");
+
+        echo<<<EOT
+        <div class="adressen">
+        <h2>$address</h2>
+EOT;
+        foreach ($pizzen as $currentpizza) {
+            echo "$currentpizza, ";
+        }
+        echo "<br/>";
+echo<<<EOT
+        <br/>
+        Preis: $completeprice € <br/>
+        <br/>
+<table>
+<tr>
+        <td>gebacken</td>
+        <td>unterwegs</td>
+        <td>ausgeliefert</td>
+</tr>
+<tr>    
+        <td><input type="radio" name="pizza1" value="gebacken" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza1=gebacken'"></td>
+        <td><input type="radio" name="pizza1" value="unterwegs" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza1=unterwegs'"   checked></td>
+        <td><input type="radio" name="pizza1" value="ausgeliefert" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza1=ausgeliefert'"></td>
+</tr>
+</table>
+        </div>
+EOT;
+    }
+
     
     /**
      * Processes the data that comes via GET or POST i.e. CGI.
@@ -126,6 +169,7 @@ class fahrer extends Page
     {
         try {
             $page = new fahrer();
+            $page->getViewData();
             $page->processReceivedData();
             $page->generateView();
         }

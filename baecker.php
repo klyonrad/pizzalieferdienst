@@ -113,7 +113,7 @@ EOT;
     
     private function insert_pizza($name = ""){
 	static $cnt = 0;
-	$link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza'
+	$link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza';
 	echo "\t<tr>\n<td>$name</td>\n";
 	echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"bestellt\" onclick=\"window.location.href='$link$cnt=bestellt'\"/></td>\n";
 	echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"inOfen\" onclick=\"window.location.href='$link$cnt=inOfen'\"/></td>\n";

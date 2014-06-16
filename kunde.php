@@ -88,9 +88,61 @@ class kunde extends Page
         // to do: call generateView() for all members
         // to do: output view of this page
         
+        echo<<<EOT
+        <h1>Kunde</h1>
+        <br/>
+<table>
+<tr>
+        <td></td>
+        <td><strong>bestellt</strong></td>
+        <td><strong>im Ofen</strong></td>
+        <td><strong>fertig</strong></td>
+        <td><strong>unterwegs</strong></td>
+</tr>
+EOT;
+        $this->showOnePizza("Margharita", 1, "fertig");
+        $this->showOnePizza("Salami", 2, "imOfen");
+        $this->showOnePizza("Tonno", 3, "fertig");
+        $this->showOnePizza("Hawaii", 4, "imOfen");
         
-        $this->generatePageFooter();
+        echo<<<EOT
+        </table>
+<div class="navitem"><a href="bestellung.html">Neue Bestellung</a> </div>
+EOT;
+	
+		$this->generatePageFooter();
+	}
+
+    private function showOnePizza($pizza, $number, $status)
+    {
+        echo<<<EOT
+        <tr>
+        <td>$pizza</td>
+EOT;
+        echo "<td><input type=\"radio\" name=\"pizza$number\" value=\"bestellt\" disabled ";
+        if ($status === "bestellt") 
+            echo "checked";
+        echo "></td>";
+
+        echo "<td><input type=\"radio\" name=\"pizza$number\" value=\"imOfen\" disabled ";
+        if ($status === "imOfen") 
+            echo "checked";
+        echo "></td>";
+
+        echo "<td><input type=\"radio\" name=\"pizza$number\" value=\"fertig\" disabled ";
+        if ($status === "fertig") 
+            echo "checked";
+        echo "></td>";
+
+        echo "<td><input type=\"radio\" name=\"pizza$number\" value=\"unterwegs\" disabled ";
+        if ($status === "unterwegs") 
+            echo "checked";
+        echo "></td>";
+        
+        echo "</tr>";
+//EOT;
     }
+        
     
     /**
      * Processes the data that comes via GET or POST i.e. CGI.
