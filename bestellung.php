@@ -26,15 +26,13 @@ require_once './Page.php';
  * The name of the template is supposed
  * to be replaced by the name of the specific HTML page e.g. baker.
  * The order of methods might correspond to the order of thinking 
- * during implementation.
- 
+ * during implementation. 
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
 class bestellung extends Page
-{
-    // to do: declare reference variables for members 
-    // representing substructures/blocks
+{   
+    private $recordset;
     
     /**
      * Instantiates members (to be defined above).   
@@ -43,10 +41,6 @@ class bestellung extends Page
      *
      * @return none
      */
-     
-    private $recordset;
-    
-     
     protected function __construct() 
     {
         parent::__construct();
@@ -97,9 +91,8 @@ class bestellung extends Page
     {
         $this->getViewData();
         $this->generatePageHeader('Bestellung');
-        // to do: call generateView() for all members
-        // to do: output view of this page
-        $link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?';
+        //$link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?';
+        $link = 'ordersubmit.php?';
         $this->generateJSfunctions($link);
         echo<<<EOT
 
@@ -111,13 +104,8 @@ class bestellung extends Page
 EOT;
 	
 		while ($record = $this->recordset->fetch_assoc()){
-			$this->insert_pizzen($record['pizzaname'], $record['price'], $record['imgfile']);
+			$this->insert_pizza($record['pizzaname'], $record['price'], $record['imgfile']);
 		}
-	/*
-        $this->insert_pizzen(, 4.0);
-        $this->insert_pizzen('Salami', 4.5);
-        $this->insert_pizzen('Hawaii', 5.5);
-        */
         
         echo<<<EOT
         
@@ -198,7 +186,7 @@ EOT;
 EOT;
 	}
     
-    private function insert_pizzen($name = "", $price = -1.0, $imgfile){
+    private function insert_pizza($name = "", $price = -1.0, $imgfile){
 		$priceWithComma = number_format($price, 2, ",", ".");
         echo "\t\t\t<tr><td> <img src=\"$imgfile\" alt=\"$name\" height=\"90\" width=\"130\" onClick=\"Hinzufuegen('$name', $price)\"> $name&nbsp;$priceWithComma €</td></tr>\n";
     }

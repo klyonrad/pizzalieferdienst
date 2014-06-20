@@ -26,8 +26,7 @@ require_once './Page.php';
  * The name of the template is supposed
  * to be replaced by the name of the specific HTML page e.g. baker.
  * The order of methods might correspond to the order of thinking 
- * during implementation.
- 
+ * during implementation. 
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */

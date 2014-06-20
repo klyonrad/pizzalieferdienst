@@ -26,11 +26,12 @@ require_once './Page.php';
  * The name of the template is supposed
  * to be replaced by the name of the specific HTML page e.g. baker.
  * The order of methods might correspond to the order of thinking 
- * during implementation. 
+ * during implementation.
+ 
  * @author   Bernhard Kreling, <b.kreling@fbi.h-da.de> 
  * @author   Ralf Hahn, <ralf.hahn@h-da.de> 
  */
-class index extends Page
+class PageTemplate extends Page
 {
     // to do: declare reference variables for members 
     // representing substructures/blocks
@@ -83,15 +84,14 @@ class index extends Page
     protected function generateView() 
     {
         $this->getViewData();
-        $this->generatePageHeader('Pizzalieferdienst');
+        $this->generatePageHeader('submit pizza order');
         
-        echo<<<EOT
-    <div class="navitem"><a href="bestellung.php">Neue Bestellung</a></div>
-	<div class="navitem"><a href="kunde.php">Bestellübersicht</a></div>
-	<div class="navitem"><a href="fahrer.php">Fahrer</a></div>
-	<div class="navitem"><a href="baecker.php">Bäcker</a></div>
-EOT;
-        
+        /* echo "\n";
+        var_dump($_GET); */
+		//print_r($_GET);
+		
+		echo "\n order is submitted!";
+		
         $this->generatePageFooter();
     }
     
@@ -107,7 +107,31 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
-        // to do: call processReceivedData() for all members
+        $address = $_GET["Name"];
+        unset ($_GET["Name"]);
+        $pizzen = $_GET;
+		try {
+			$SQLcreateOrder = "INSERT INTO `Order` (`address`) VALUES ('$address');";
+			$this->_database->query ($SQLcreateOrder);
+			$orderID = mysqli_insert_id($this->_database); //get the automatic ID
+			echo "orderID is $orderID ";
+			
+			//link the Order and their pizzas together:
+			$SQLaddOrderedPizza = "INSERT INTO `orderedPizza` (`orderID`, `pizzaname`, `status`)	
+			VALUES";
+			foreach ($pizzen as $currentpizza) {
+				$SQLaddOrderedPizza .= "($orderID, '$currentpizza', 0),";	
+			}
+			$SQLaddOrderedPizza = rtrim($SQLaddOrderedPizza, ","); // trim comma at the end
+			$SQLaddOrderedPizza .= ";";	
+			
+			$this->_database->query ($SQLaddOrderedPizza);
+			//echo " yay debug that SQL string! $SQLaddOrderedPizza";			
+		}
+		
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}
     }
 
     /**
@@ -125,7 +149,7 @@ EOT;
     public static function main() 
     {
         try {
-            $page = new index();
+            $page = new PageTemplate();
             $page->processReceivedData();
             $page->generateView();
         }
@@ -138,11 +162,4 @@ EOT;
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
-index::main();
-
-// Zend standard does not like closing php-tag!
-// PHP doesn't require the closing tag (it is assumed when the file ends). 
-// Not specifying the closing ? >  helps to prevent accidents 
-// like additional whitespace which will cause session 
-// initialization to fail ("headers already sent"). 
-//? >
+PageTemplate::main();
