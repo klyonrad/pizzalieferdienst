@@ -120,7 +120,7 @@ class PageTemplate extends Page
 			$SQLaddOrderedPizza = "INSERT INTO `orderedPizza` (`orderID`, `pizzaname`, `status`)	
 			VALUES";
 			foreach ($pizzen as $currentpizza) {
-				$SQLaddOrderedPizza .= "($orderID, '$currentpizza', 0),";	
+				$SQLaddOrderedPizza .= "($orderID, '$currentpizza', 'bestellt'),";	
 			}
 			$SQLaddOrderedPizza = rtrim($SQLaddOrderedPizza, ","); // trim comma at the end
 			$SQLaddOrderedPizza .= ";";	
