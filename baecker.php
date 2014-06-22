@@ -68,7 +68,17 @@ class baecker extends Page
      */
     protected function getViewData()
     {
-        // to do: fetch data for this view from the database
+		try {
+			$SQLabfrage = "SELECT `pizzaname`, `status` FROM orderedPizza WHERE status <= 2;";
+			$this->recordset = $this->_database->query ($SQLabfrage);			
+		}
+		
+		
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		var_dump($this->recordset);
+		var_dump($this->recordset->fetch_assoc());
     }
     
     /**
@@ -99,24 +109,41 @@ class baecker extends Page
         
 EOT;
 	//to do: insert_pizza() für alle Pizzen beim Bäcker (SQL call)
+		while ($record = $this->recordset->fetch_assoc()){
+			$this->insert_pizza($record['pizzaname'], $record['status']);
+		}	
+	
 	
 	//just for static tests
+	/*
 	$this->insert_pizza('Margherita');
 	$this->insert_pizza('Margherita');
-	$this->insert_pizza('Hawaii');
+	$this->insert_pizza('Hawaii'); */
 	//just for static tests
 		echo "</table>";
         $this->generatePageFooter();
     }
     
-    
-    private function insert_pizza($name = ""){
-		static $cnt = 0;
+    // status needs to be a number from 0 to 2
+    private function insert_pizza($name = "", $status){
+		static $cnt = 0; // to do: should $cnt be a class attribute?
 		$link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza';
 		echo "\t<tr>\n<td>$name</td>\n";
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"bestellt\" onclick=\"window.location.href='$link$cnt=bestellt'\" checked/></td>\n";
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"inOfen\" onclick=\"window.location.href='$link$cnt=inOfen'\"/></td>\n";
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"fertig\" onclick=\"window.location.href='$link$cnt=fertig'\"/></td>\n";
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"bestellt\" onclick=\"window.location.href='$link$cnt=bestellt'\" ";		
+		if ($status == 0) // === didn't work... don't know why
+            echo "checked";
+        echo "/></td>\n";
+        
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"inOfen\" onclick=\"window.location.href='$link$cnt=inOfen'\" ";
+		if ($status == 1) 
+            echo "checked";
+        echo "/></td>\n";		
+        
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"fertig\" onclick=\"window.location.href='$link$cnt=fertig'\" ";
+		if ($status == 2) 
+            echo "checked";
+        echo "/></td>\n";
+        		
 		echo "\t</tr>\n";
 		$cnt++;
     }
