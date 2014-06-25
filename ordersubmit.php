@@ -125,8 +125,7 @@ class PageTemplate extends Page
 			$SQLaddOrderedPizza = rtrim($SQLaddOrderedPizza, ","); // trim comma at the end
 			$SQLaddOrderedPizza .= ";";	
 			
-			$this->_database->query ($SQLaddOrderedPizza);
-			//echo " yay debug that SQL string! $SQLaddOrderedPizza";			
+			$this->_database->query ($SQLaddOrderedPizza);	
 		}
 		
 		catch (Exception $e) {

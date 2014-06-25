@@ -32,8 +32,7 @@ require_once './Page.php';
  */
 class baecker extends Page
 {
-    // to do: declare reference variables for members 
-    // representing substructures/blocks
+    private $recordset;
     
     /**
      * Instantiates members (to be defined above).   
@@ -41,7 +40,8 @@ class baecker extends Page
      * So the database connection is established.
      *
      * @return none
-     */
+     */     
+     
     protected function __construct() 
     {
         parent::__construct();
@@ -77,8 +77,8 @@ class baecker extends Page
 		catch (Exception $e) {
 			echo $e->getMessage();
 		}
-		var_dump($this->recordset);
-		var_dump($this->recordset->fetch_assoc());
+		/*var_dump($this->recordset);
+		var_dump($this->recordset->fetch_assoc());*/
     }
     
     /**

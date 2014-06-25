@@ -32,8 +32,7 @@ require_once './Page.php';
  */
 class fahrer extends Page
 {
-    // to do: declare reference variables for members 
-    // representing substructures/blocks
+	private $recordset;
     
     /**
      * Instantiates members (to be defined above).   
@@ -67,9 +66,22 @@ class fahrer extends Page
      * @return none
      */
     protected function getViewData()
-    {
-        // to do: fetch data for this view from the database
-        //########   einiges an SQL ab hier##########################
+    {     
+		$SQLabfrage = 
+		"SELECT o.orderID, o.address,
+		GROUP_CONCAT(op.pizzaname) AS pizzen,
+		SUM(price) AS completeprice
+		FROM `Order` AS o JOIN orderedPizza AS op JOIN Angebot AS a
+		WHERE o.orderID = op.orderID AND
+		op.pizzaname = a.pizzaname
+		GROUP BY orderID;";   
+        try {
+			$this->recordset = $this->_database->query ($SQLabfrage);			
+		}		
+		
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}
     }
     
     /**
@@ -81,24 +93,16 @@ class fahrer extends Page
      *
      * @return none
      */
-
-
         
     protected function generateView() 
     {
-        $testaddress = "Müller, Freßgasse 11, 65000 Frankfurt";
-        $testprice = 13.00;
-        $testpizzen = ["Tonno", "Calzone", "Margherita", "Hawaii","Tonno"];
-
-        $this->getViewData();
         $this->generatePageHeader('Fahrer');
-        // to do: call generateView() for all members
-        // to do: output view of this page
         echo "\t<h1>Fahrer</h1>\n";
-
-        $this->outputOneOrder($testaddress, $testpizzen, $testprice);
-        $this->outputOneOrder($testaddress, $testpizzen, $testprice);
-	
+        echo "\n";
+		
+        while ($record = $this->recordset->fetch_assoc()){
+			$this->outputOneOrder($record["address"], $record["pizzen"], $record["completeprice"]);			
+		}	
 	
         $this->generatePageFooter();
     }
@@ -106,17 +110,13 @@ class fahrer extends Page
 
     private function outputOneOrder($address, $pizzen, $completeprice = -1.0)
     {
-        $completeprice = number_format($completeprice, 2, ",", ".");
+        $completeprice = number_format($completeprice, 2, ",", ".");        
 
         echo<<<EOT
         <div class="adressen">
-        <h2>$address</h2>
-EOT;
-        foreach ($pizzen as $currentpizza) {
-            echo "$currentpizza, ";
-        }
-        echo "<br/>";
-echo<<<EOT
+        <h2>$address</h2>   
+        $pizzen     
+        <br/>
         <br/>
         Preis: $completeprice € <br/>
         <br/>
