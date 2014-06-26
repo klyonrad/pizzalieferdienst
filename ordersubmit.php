@@ -92,6 +92,10 @@ class PageTemplate extends Page
 		
 		echo "\n order is submitted!";
 		
+		echo<<<EOT
+		<a href=kunde.php>Bestellung jetzt live verfolgen!</a>
+EOT;
+		
         $this->generatePageFooter();
     }
     
@@ -115,6 +119,7 @@ class PageTemplate extends Page
 			$this->_database->query ($SQLcreateOrder);
 			$orderID = mysqli_insert_id($this->_database); //get the automatic ID
 			echo "orderID is $orderID ";
+			$_SESSION["orderID"] = $orderID;
 			
 			//link the Order and their pizzas together:
 			$SQLaddOrderedPizza = "INSERT INTO `orderedPizza` (`orderID`, `pizzaname`, `status`)	
@@ -161,4 +166,5 @@ class PageTemplate extends Page
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
+session_start();
 PageTemplate::main();

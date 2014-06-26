@@ -46,7 +46,6 @@ class fahrer extends Page
     protected function __construct() 
     {
         parent::__construct();
-        // to do: instantiate members representing substructures/blocks
     }
     
     /**
@@ -196,13 +195,9 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
-        var_dump($_GET);
         $idArray = unserialize($_GET["arr"]);
         $newStatus = mysql_real_escape_string($_GET["state"]);
-        
-        echo "here is the ID array: ";
-        var_dump($idArray);
-        
+                
         foreach($idArray as $pizzaID){	
 			try {
 				$this->_database->query ("UPDATE orderedPizza SET `status` = '$newStatus' WHERE pizzaID = $pizzaID;");			

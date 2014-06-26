@@ -236,10 +236,3 @@ EOT;
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
 bestellung::main();
-
-// Zend standard does not like closing php-tag!
-// PHP doesn't require the closing tag (it is assumed when the file ends). 
-// Not specifying the closing ? >  helps to prevent accidents 
-// like additional whitespace which will cause session 
-// initialization to fail ("headers already sent"). 
-//? >

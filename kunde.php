@@ -69,6 +69,7 @@ class kunde extends Page
     protected function getViewData()
     {
 		$this->orderID = 10;
+		$this->orderID = $_SESSION["orderID"];
         $SQLabfrage = "SELECT pizzaID, pizzaname, `status` FROM orderedPizza
 		WHERE orderID = $this->orderID ;";
 		try {
@@ -81,8 +82,7 @@ class kunde extends Page
 		
 		while ($idrecord = $this->recordset->fetch_assoc()) {
 			$this->pizzen[] = $idrecord;
-		}		
-		var_dump($this->pizzen);
+		}
     }
     
     /**
@@ -197,11 +197,6 @@ EOT;
 
 // This call is starting the creation of the page. 
 // That is input is processed and output is created.
+session_start();
 kunde::main();
 
-// Zend standard does not like closing php-tag!
-// PHP doesn't require the closing tag (it is assumed when the file ends). 
-// Not specifying the closing ? >  helps to prevent accidents 
-// like additional whitespace which will cause session 
-// initialization to fail ("headers already sent"). 
-//? >
