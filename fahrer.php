@@ -32,7 +32,8 @@ require_once './Page.php';
  */
 class fahrer extends Page
 {
-	private $recordset;
+	private $fahrerResult;
+	private $cnt; //temporary so that the radiobuttons have different names
     
     /**
      * Instantiates members (to be defined above).   
@@ -70,13 +71,18 @@ class fahrer extends Page
 		$SQLabfrage = 
 		"SELECT o.orderID, o.address,
 		GROUP_CONCAT(op.pizzaname) AS pizzen,
-		SUM(price) AS completeprice
+		SUM(price) AS completeprice,
+		op.status
 		FROM `Order` AS o JOIN orderedPizza AS op JOIN Angebot AS a
 		WHERE o.orderID = op.orderID AND
-		op.pizzaname = a.pizzaname
+		op.pizzaname = a.pizzaname AND
+		op.status IN ('gebacken', 'unterwegs') AND
+		op.orderID NOT IN 
+		(SELECT orderID from orderedPizza
+		WHERE status IN ('bestellt', 'inOfen', 'geliefert'))
 		GROUP BY orderID;";   
         try {
-			$this->recordset = $this->_database->query ($SQLabfrage);			
+			$this->fahrerResult = $this->_database->query ($SQLabfrage);			
 		}		
 		
 		catch (Exception $e) {
@@ -99,18 +105,19 @@ class fahrer extends Page
         $this->generatePageHeader('Fahrer');
         echo "\t<h1>Fahrer</h1>\n";
         echo "\n";
-		
-        while ($record = $this->recordset->fetch_assoc()){
-			$this->outputOneOrder($record["address"], $record["pizzen"], $record["completeprice"]);			
+        $this->cnt = 1;
+        while ($record = $this->fahrerResult->fetch_assoc()){
+			$this->outputOneOrder($record["address"], $record["pizzen"], $record["completeprice"], $record["orderID"], $record["status"]);		
 		}	
 	
         $this->generatePageFooter();
     }
 
 
-    private function outputOneOrder($address, $pizzen, $completeprice = -1.0)
+    private function outputOneOrder($address, $pizzen, $completeprice = -1.0, $orderID, $orderstatus)
     {
-        $completeprice = number_format($completeprice, 2, ",", ".");        
+        $completeprice = number_format($completeprice, 2, ",", ".");      
+        $link = "http://www.fbi.h-da.de/cgi-bin/Echo.pl";
 
         echo<<<EOT
         <div class="adressen">
@@ -127,13 +134,28 @@ class fahrer extends Page
         <td>ausgeliefert</td>
 </tr>
 <tr>    
-        <td><input type="radio" name="pizza1" value="gebacken" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza1=gebacken'"></td>
-        <td><input type="radio" name="pizza1" value="unterwegs" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza1=unterwegs'"   checked></td>
-        <td><input type="radio" name="pizza1" value="ausgeliefert" onclick="window.location.href='http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza1=ausgeliefert'"></td>
+EOT;
+        echo "<td><input type=\"radio\" name=\"pizza$this->cnt\" value=\"gebacken\" onclick=\"window.location.href='$link?pizza1=gebacken'\" ";
+ 		if ($orderstatus === "gebacken") 
+            echo "checked";
+        echo "></td>";	 
+        
+        echo "<td><input type=\"radio\" name=\"pizza$this->cnt\" value=\"unterwegs\" onclick=\"window.location.href='$link?pizza1=unterwegs'\" ";
+ 		if ($orderstatus === "unterwegs") 
+            echo "checked";
+        echo "></td>";	 
+
+        echo "<td><input type=\"radio\" name=\"pizza$this->cnt\" value=\"geliefert\" onclick=\"window.location.href='$link?pizza1=geliefert'\" ";
+ 		if ($orderstatus === "geliefert") 
+            echo "checked";
+        echo "></td>";
+        
+		echo<<<EOT
 </tr>
 </table>
         </div>
 EOT;
+		$this->cnt++; // delete after using pizzaID
     }
 
     
@@ -149,7 +171,6 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
-        // to do: call processReceivedData() for all members
     }
 
     /**

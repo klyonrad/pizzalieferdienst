@@ -45,7 +45,6 @@ class baecker extends Page
     protected function __construct() 
     {
         parent::__construct();
-        // to do: instantiate members representing substructures/blocks
     }
     
     /**
@@ -68,17 +67,15 @@ class baecker extends Page
      */
     protected function getViewData()
     {
-		try {
-			$SQLabfrage = "SELECT `pizzaname`, `status` FROM orderedPizza WHERE status <= 2;";
+		$SQLabfrage = "SELECT pizzaID, pizzaname, status FROM orderedPizza 
+		WHERE status = 'bestellt' OR status = 'inOfen';";
+		try {			
 			$this->recordset = $this->_database->query ($SQLabfrage);			
-		}
-		
+		}		
 		
 		catch (Exception $e) {
 			echo $e->getMessage();
 		}
-		/*var_dump($this->recordset);
-		var_dump($this->recordset->fetch_assoc());*/
     }
     
     /**
@@ -92,7 +89,6 @@ class baecker extends Page
      */
     protected function generateView() 
     {
-        $this->getViewData();
         $this->generatePageHeader('Bäckerübersicht');
         echo<<<EOT
         <h1>Bäcker</h1>
@@ -102,40 +98,37 @@ class baecker extends Page
         <td></td>
         <td><strong>bestellt</strong></td>
         <td><strong>im Ofen</strong></td>
-        <td><strong>fertig</strong></td>
+        <td><strong>gebacken</strong></td>
 	</tr>
         
 EOT;
 		while ($record = $this->recordset->fetch_assoc()){
-			$this->insert_pizza($record['pizzaname'], $record['status']);
+			$this->insert_pizza($record["pizzaID"], $record["pizzaname"], $record["status"]);
 		}	
 		echo "</table>";
         $this->generatePageFooter();
     }
     
-    // status needs to be a number from 0 to 2
-    private function insert_pizza($name = "", $status){
-		static $cnt = 0; // to do: should $cnt be a class attribute?
-		//should it be the pizzaID?
-		$link = 'http://www.fbi.h-da.de/cgi-bin/Echo.pl?pizza';
+    /** status needs to be an appropriate string */
+    private function insert_pizza($pizzaID, $name = "", $status){
+		$link = 'baecker.php?pizza=';
 		echo "\t<tr>\n<td>$name</td>\n";
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"bestellt\" onclick=\"window.location.href='$link$cnt=bestellt'\" ";		
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"bestellt\" onclick=\"window.location.href='$link$pizzaID&status=bestellt'\" ";		
 		if ($status === "bestellt")
             echo "checked";
         echo "/></td>\n";
         
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"inOfen\" onclick=\"window.location.href='$link$cnt=inOfen'\" ";
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"inOfen\" onclick=\"window.location.href='$link$pizzaID&status=inOfen'\" ";
 		if ($status === "inOfen") 
             echo "checked";
         echo "/></td>\n";		
         
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$cnt\" value=\"fertig\" onclick=\"window.location.href='$link$cnt=fertig'\" ";
-		if ($status === "fertig") 
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"gebacken\" onclick=\"window.location.href='$link$pizzaID&status=gebacken'\" ";
+		if ($status === "gebacken") 
             echo "checked";
         echo "/></td>\n";
         		
 		echo "\t</tr>\n";
-		$cnt++;
     }
     
     /**
@@ -150,7 +143,16 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
-        // to do: call processReceivedData() for all members
+        $pizzaID = $_GET["pizza"];
+        $newstatus = $_GET["status"];
+		try {
+			$SQLupdatepizzastatus = "UPDATE orderedPizza SET status = '$newstatus' WHERE pizzaID = $pizzaID;";
+			$this->_database->query ($SQLupdatepizzastatus);
+		}
+		
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}        
     }
 
     /**
@@ -169,7 +171,10 @@ EOT;
     {
         try {
             $page = new baecker();
-            $page->processReceivedData();
+            if (!empty($_GET)) { // suppress error messages when there is nothing to process
+				$page->processReceivedData();
+				}
+            $page->getViewData();
             $page->generateView();
         }
         catch (Exception $e) {
@@ -179,8 +184,6 @@ EOT;
     }
 }
 
-// This call is starting the creation of the page. 
-// That is input is processed and output is created.
 baecker::main();
 
 // Zend standard does not like closing php-tag!
