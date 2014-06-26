@@ -32,8 +32,9 @@ require_once './Page.php';
  */
 class fahrer extends Page
 {
-	private $fahrerResult;
-	private $cnt; //temporary so that the radiobuttons have different names
+	private $fahrerResult = array();
+	private $recordset;
+	private $pizzasForOrderID = array();
     
     /**
      * Instantiates members (to be defined above).   
@@ -82,12 +83,35 @@ class fahrer extends Page
 		WHERE status IN ('bestellt', 'inOfen', 'geliefert'))
 		GROUP BY orderID;";   
         try {
-			$this->fahrerResult = $this->_database->query ($SQLabfrage);			
+			$this->recordset = $this->_database->query ($SQLabfrage);			
 		}		
 		
 		catch (Exception $e) {
 			echo $e->getMessage();
 		}
+		
+		while ($record = $this->recordset->fetch_assoc()){
+			array_push($this->fahrerResult, $record);					
+		}
+		
+		//store the relevant pizzaIDs somewhere:
+		foreach ($this->fahrerResult as $record) {
+			$currentID = (int)$record["orderID"]; //workaround because of errors in SQL string
+			$SQLabfrage = "SELECT pizzaID from orderedPizza
+			WHERE orderID = $currentID ;";
+			try {
+				$this->recordset = $this->_database->query ($SQLabfrage);			
+			}		
+		
+			catch (Exception $e) {
+				echo $e->getMessage();
+			}
+			$pizzenForSpecificOrder = array();
+			while ($idrecord = (int)$this->recordset->fetch_assoc()["pizzaID"]) {
+				$pizzenForSpecificOrder[] = $idrecord;
+			}
+			$this->pizzasForOrderID[$currentID] = $pizzenForSpecificOrder;			
+		}		
     }
     
     /**
@@ -106,7 +130,7 @@ class fahrer extends Page
         echo "\t<h1>Fahrer</h1>\n";
         echo "\n";
         $this->cnt = 1;
-        while ($record = $this->fahrerResult->fetch_assoc()){
+        foreach($this->fahrerResult as $record) {
 			$this->outputOneOrder($record["address"], $record["pizzen"], $record["completeprice"], $record["orderID"], $record["status"]);		
 		}	
 	
@@ -117,7 +141,8 @@ class fahrer extends Page
     private function outputOneOrder($address, $pizzen, $completeprice = -1.0, $orderID, $orderstatus)
     {
         $completeprice = number_format($completeprice, 2, ",", ".");      
-        $link = "http://www.fbi.h-da.de/cgi-bin/Echo.pl";
+        $link = "fahrer.php";
+        $serializedIDarray = serialize($this->pizzasForOrderID[$orderID]);
 
         echo<<<EOT
         <div class="adressen">
@@ -133,29 +158,29 @@ class fahrer extends Page
         <td>unterwegs</td>
         <td>ausgeliefert</td>
 </tr>
-<tr>    
+<tr>   
+ 
 EOT;
-        echo "<td><input type=\"radio\" name=\"pizza$this->cnt\" value=\"gebacken\" onclick=\"window.location.href='$link?pizza1=gebacken'\" ";
+        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"gebacken\" onclick=\"window.location.href='$link?arr=$serializedIDarray&state=gebacken'\" ";
  		if ($orderstatus === "gebacken") 
             echo "checked";
-        echo "></td>";	 
+        echo "></td> \n";	 
         
-        echo "<td><input type=\"radio\" name=\"pizza$this->cnt\" value=\"unterwegs\" onclick=\"window.location.href='$link?pizza1=unterwegs'\" ";
+        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"unterwegs\" onclick=\"window.location.href='$link?arr=$serializedIDarray&state=unterwegs'\" ";
  		if ($orderstatus === "unterwegs") 
             echo "checked";
-        echo "></td>";	 
+        echo "></td> \n";	 
 
-        echo "<td><input type=\"radio\" name=\"pizza$this->cnt\" value=\"geliefert\" onclick=\"window.location.href='$link?pizza1=geliefert'\" ";
+        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"geliefert\" onclick=\"window.location.href='$link?arr=$serializedIDarray&state=geliefert'\" ";
  		if ($orderstatus === "geliefert") 
             echo "checked";
-        echo "></td>";
+        echo "></td> \n";
         
 		echo<<<EOT
 </tr>
 </table>
         </div>
 EOT;
-		$this->cnt++; // delete after using pizzaID
     }
 
     
@@ -171,6 +196,22 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
+        var_dump($_GET);
+        $idArray = unserialize($_GET["arr"]);
+        $newStatus = mysql_real_escape_string($_GET["state"]);
+        
+        echo "here is the ID array: ";
+        var_dump($idArray);
+        
+        foreach($idArray as $pizzaID){	
+			try {
+				$this->_database->query ("UPDATE orderedPizza SET `status` = '$newStatus' WHERE pizzaID = $pizzaID;");			
+			}		
+		
+			catch (Exception $e) {
+				echo $e->getMessage();
+			}
+		}        
     }
 
     /**
@@ -189,8 +230,10 @@ EOT;
     {
         try {
             $page = new fahrer();
-            $page->getViewData();
-            $page->processReceivedData();
+            if (!empty($_GET)) { // suppress error messages when there is nothing to process
+				$page->processReceivedData();
+				}
+			$page->getViewData();	
             $page->generateView();
         }
         catch (Exception $e) {

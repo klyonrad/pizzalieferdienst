@@ -144,7 +144,7 @@ EOT;
     {
         parent::processReceivedData();
         $pizzaID = $_GET["pizza"];
-        $newstatus = $_GET["status"];
+        $newstatus = mysql_real_escape_string($_GET["status"]);
 		try {
 			$SQLupdatepizzastatus = "UPDATE orderedPizza SET status = '$newstatus' WHERE pizzaID = $pizzaID;";
 			$this->_database->query ($SQLupdatepizzastatus);
