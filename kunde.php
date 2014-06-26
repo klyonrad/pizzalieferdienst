@@ -32,8 +32,9 @@ require_once './Page.php';
  */
 class kunde extends Page
 {
-    // to do: declare reference variables for members 
-    // representing substructures/blocks
+    private $orderID;
+    private $recordset;
+    private $pizzen = array();
     
     /**
      * Instantiates members (to be defined above).   
@@ -45,7 +46,6 @@ class kunde extends Page
     protected function __construct() 
     {
         parent::__construct();
-        // to do: instantiate members representing substructures/blocks
     }
     
     /**
@@ -68,7 +68,21 @@ class kunde extends Page
      */
     protected function getViewData()
     {
-        // to do: fetch data for this view from the database
+		$this->orderID = 10;
+        $SQLabfrage = "SELECT pizzaID, pizzaname, `status` FROM orderedPizza
+		WHERE orderID = $this->orderID ;";
+		try {
+			$this->recordset = $this->_database->query ($SQLabfrage);			
+		}
+		
+		catch (Exception $e) {
+			echo $e->getMessage();
+		}
+		
+		while ($idrecord = $this->recordset->fetch_assoc()) {
+			$this->pizzen[] = $idrecord;
+		}		
+		var_dump($this->pizzen);
     }
     
     /**
@@ -84,8 +98,6 @@ class kunde extends Page
     {
         $this->getViewData();
         $this->generatePageHeader('Bestellübersicht');
-        // to do: call generateView() for all members
-        // to do: output view of this page
         
         echo<<<EOT
         <h1>Kunde</h1>
@@ -99,11 +111,10 @@ class kunde extends Page
         <td><strong>unterwegs</strong></td>
 </tr>
 EOT;
-        $this->showOnePizza("Margharita", 1, "fertig");
-        $this->showOnePizza("Salami", 2, "imOfen");
-        $this->showOnePizza("Tonno", 3, "fertig");
-        $this->showOnePizza("Hawaii", 4, "imOfen");
-        
+
+		foreach ($this->pizzen as $it)
+			$this->showOnePizza($it["pizzaname"], $it["pizzaID"], $it["status"]);
+			
         echo<<<EOT
         </table>
 <div class="navitem"><a href="bestellung.php">Neue Bestellung</a> </div>
@@ -124,12 +135,12 @@ EOT;
         echo "></td>";
 
         echo "<td><input type=\"radio\" name=\"pizza$number\" value=\"imOfen\" disabled ";
-        if ($status === "imOfen") 
+        if ($status === "inOfen") 
             echo "checked";
         echo "></td>";
 
         echo "<td><input type=\"radio\" name=\"pizza$number\" value=\"fertig\" disabled ";
-        if ($status === "fertig") 
+        if ($status === "gebacken") 
             echo "checked";
         echo "></td>";
 
@@ -155,7 +166,7 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
-        // to do: call processReceivedData() for all members
+        
     }
 
     /**
@@ -172,7 +183,7 @@ EOT;
      */    
     public static function main() 
     {
-        try {
+		try {
             $page = new kunde();
             $page->processReceivedData();
             $page->generateView();
