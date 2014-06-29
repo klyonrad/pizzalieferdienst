@@ -111,7 +111,7 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
-        $address = $_GET["Name"];
+        $address = $_GET["Name"];        
         $address = mysql_real_escape_string($address);
         unset ($_GET["Name"]);
         $pizzen = $_GET;

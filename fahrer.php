@@ -142,6 +142,7 @@ class fahrer extends Page
         $completeprice = number_format($completeprice, 2, ",", ".");      
         $link = "fahrer.php";
         $serializedIDarray = serialize($this->pizzasForOrderID[$orderID]);
+        $address = (htmlspecialchars($address));
 
         echo<<<EOT
         <div class="adressen">
