@@ -92,9 +92,11 @@ abstract class Page
      *
      * @return none
      */
-    protected function generatePageHeader($headline = "") 
+    protected function generatePageHeader($headline = "", $refreshlink = NULL) 
     {
         $headline = htmlspecialchars($headline);
+        if ($refreshlink != NULL)
+			$refreshlink = htmlspecialchars($refreshlink);
         header("Content-type: text/html; charset=UTF-8");
         
         echo<<<EOT
@@ -103,6 +105,10 @@ abstract class Page
 		<head>
 		<link rel="stylesheet" type="text/css" href="style.css" />
                 <meta charset="UTF-8" />
+EOT;
+		if ($refreshlink != NULL)
+			echo "<meta http-equiv=\"refresh\" content = \"5; URL=$refreshlink\">"; //see webtips.dan.info/refresh.html
+		echo<<<EOT
                 <title>$headline</title>
         </head>        
         <body>

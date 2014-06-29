@@ -89,7 +89,7 @@ class baecker extends Page
      */
     protected function generateView() 
     {
-        $this->generatePageHeader('Bäckerübersicht');
+        $this->generatePageHeader('Bäckerübersicht', 'baecker.php');
         echo<<<EOT
         <h1>Bäcker</h1>
         <br/>

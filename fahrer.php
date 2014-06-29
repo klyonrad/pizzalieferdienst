@@ -125,7 +125,7 @@ class fahrer extends Page
         
     protected function generateView() 
     {
-        $this->generatePageHeader('Fahrer');
+        $this->generatePageHeader('Fahrer', 'fahrer.php');
         echo "\t<h1>Fahrer</h1>\n";
         echo "\n";
         $this->cnt = 1;
