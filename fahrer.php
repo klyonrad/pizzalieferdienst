@@ -200,6 +200,7 @@ EOT;
                 
         foreach($idArray as $pizzaID){	
 			try {
+				$pizzID = mysql_real_escape_string($pizzaID);
 				$this->_database->query ("UPDATE orderedPizza SET `status` = '$newStatus' WHERE pizzaID = $pizzaID;");			
 			}		
 		

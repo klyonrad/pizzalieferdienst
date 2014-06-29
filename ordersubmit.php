@@ -112,6 +112,7 @@ EOT;
     {
         parent::processReceivedData();
         $address = $_GET["Name"];
+        $address = mysql_real_escape_string($address);
         unset ($_GET["Name"]);
         $pizzen = $_GET;
 		try {
@@ -125,6 +126,7 @@ EOT;
 			$SQLaddOrderedPizza = "INSERT INTO `orderedPizza` (`orderID`, `pizzaname`, `status`)	
 			VALUES";
 			foreach ($pizzen as $currentpizza) {
+				$currentpizza = mysql_real_escape_string($currentpizza);
 				$SQLaddOrderedPizza .= "($orderID, '$currentpizza', 'bestellt'),";	
 			}
 			$SQLaddOrderedPizza = rtrim($SQLaddOrderedPizza, ","); // trim comma at the end

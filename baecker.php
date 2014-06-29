@@ -143,7 +143,7 @@ EOT;
     protected function processReceivedData() 
     {
         parent::processReceivedData();
-        $pizzaID = $_GET["pizza"];
+        $pizzaID = mysql_real_escape_string($_GET["pizza"]);
         $newstatus = mysql_real_escape_string($_GET["status"]);
 		try {
 			$SQLupdatepizzastatus = "UPDATE orderedPizza SET status = '$newstatus' WHERE pizzaID = $pizzaID;";
