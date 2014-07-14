@@ -168,8 +168,10 @@ EOT;
 				
 			function bestellen(){
 				bestellung = "$link";
+				var str = document.input.addressentry.value;
+				var res = encodeURIComponent(str);
 				if(document.input.pizzasToOrder.length > 0 && document.input.addressentry.value != ""){
-					bestellung = bestellung + "Name=" + document.input.addressentry.value;
+					bestellung = bestellung + "Name=" + res;
 					for(i =0; i < document.input.pizzasToOrder.length; i++){
 						bestellung = bestellung + "&" + "Pizza" + i + "=" + document.input.pizzasToOrder.options[i].value;
 					}

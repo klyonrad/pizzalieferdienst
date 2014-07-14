@@ -70,7 +70,7 @@ class fahrer extends Page
     {     
 		$SQLabfrage = 
 		"SELECT o.orderID, o.address,
-		GROUP_CONCAT(op.pizzaname) AS pizzen,
+		GROUP_CONCAT(op.pizzaname ORDER BY pizzaID SEPARATOR ', ') AS pizzen,
 		SUM(price) AS completeprice,
 		op.status
 		FROM `Order` AS o JOIN orderedPizza AS op JOIN Angebot AS a
@@ -161,17 +161,17 @@ class fahrer extends Page
 <tr>   
  
 EOT;
-        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"gebacken\" onclick=\"window.location.href='$link?arr=$serializedIDarray&state=gebacken'\" ";
+        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"gebacken\" onclick=\"window.location.href='$link?arr=$serializedIDarray&amp;state=gebacken'\" ";
  		if ($orderstatus === "gebacken") 
             echo "checked";
         echo "></td> \n";	 
         
-        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"unterwegs\" onclick=\"window.location.href='$link?arr=$serializedIDarray&state=unterwegs'\" ";
+        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"unterwegs\" onclick=\"window.location.href='$link?arr=$serializedIDarray&amp;state=unterwegs'\" ";
  		if ($orderstatus === "unterwegs") 
             echo "checked";
         echo "></td> \n";	 
 
-        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"geliefert\" onclick=\"window.location.href='$link?arr=$serializedIDarray&state=geliefert'\" ";
+        echo "<td><input type=\"radio\" name=\"order$orderID\" value=\"geliefert\" onclick=\"window.location.href='$link?arr=$serializedIDarray&amp;state=geliefert'\" ";
  		if ($orderstatus === "geliefert") 
             echo "checked";
         echo "></td> \n";

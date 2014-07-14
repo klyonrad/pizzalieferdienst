@@ -97,7 +97,7 @@ class kunde extends Page
     protected function generateView() 
     {
         $this->getViewData();
-        $this->generatePageHeader('Bestellübersicht');
+        $this->generatePageHeader('Bestellübersicht', 'kunde.php');
         
         echo<<<EOT
         <h1>Kunde</h1>

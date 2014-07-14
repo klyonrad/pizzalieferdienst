@@ -113,17 +113,17 @@ EOT;
     private function insert_pizza($pizzaID, $name = "", $status){
 		$link = 'baecker.php?pizza=';
 		echo "\t<tr>\n<td>$name</td>\n";
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"bestellt\" onclick=\"window.location.href='$link$pizzaID&status=bestellt'\" ";		
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"bestellt\" onclick=\"window.location.href='$link$pizzaID&amp;status=bestellt'\" ";		
 		if ($status === "bestellt")
             echo "checked";
         echo "/></td>\n";
         
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"inOfen\" onclick=\"window.location.href='$link$pizzaID&status=inOfen'\" ";
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"inOfen\" onclick=\"window.location.href='$link$pizzaID&amp;status=inOfen'\" ";
 		if ($status === "inOfen") 
             echo "checked";
         echo "/></td>\n";		
         
-		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"gebacken\" onclick=\"window.location.href='$link$pizzaID&status=gebacken'\" ";
+		echo "\t\t<td><input type=\"radio\" name=\"pizza$pizzaID\" value=\"gebacken\" onclick=\"window.location.href='$link$pizzaID&amp;status=gebacken'\" ";
 		if ($status === "gebacken") 
             echo "checked";
         echo "/></td>\n";
